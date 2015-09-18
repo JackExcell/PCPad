@@ -1,0 +1,8 @@
+
+
+PCPad v0.01 - 18/09/2015
+---------------------------------------
+*Project started
+*Added a warning which will appear on
+start-up if there is no Xinput
+compatible controller plugged in.
