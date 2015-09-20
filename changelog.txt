@@ -1,4 +1,8 @@
-
+PCPad v0.1 - 20/09/2015
+---------------------------------------
+*Added controller test for 2-state
+buttons. Triggers and analog sticks
+still to come.
 
 PCPad v0.01 - 18/09/2015
 ---------------------------------------

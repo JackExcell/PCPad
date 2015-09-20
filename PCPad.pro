@@ -14,11 +14,14 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    controller.cpp
+    xinputstateworker.cpp
 
 HEADERS  += mainwindow.h \
-    controller.h
+    xinputstateworker.h
 
 FORMS    += mainwindow.ui
 
 win32: LIBS += -lXInput
+
+RESOURCES += \
+    pcpadresources.qrc

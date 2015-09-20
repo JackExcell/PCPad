@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>resources/XboxController.png</file>
+        <file>resources/LetterButtonPressed.png</file>
+        <file>resources/right1.png</file>
+        <file>resources/left1.png</file>
+        <file>resources/analogue.png</file>
+        <file>resources/start.png</file>
+        <file>resources/down.png</file>
+        <file>resources/left.png</file>
+        <file>resources/right.png</file>
+        <file>resources/up.png</file>
+    </qresource>
+</RCC>
