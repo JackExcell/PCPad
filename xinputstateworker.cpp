@@ -1,6 +1,7 @@
 #include <QDebug>
 #include <QThread>
 #include <winerror.h>
+#include <math.h>
 #include "xinputstateworker.h"
 
 XinputStateWorker::XinputStateWorker()
@@ -178,6 +179,86 @@ void XinputStateWorker::processXinputState() {
         {
              emit RIGHT_BUTTON_RELEASED();
         }
+
+        //Left trigger
+        LTfloat = (float) state.Gamepad.bLeftTrigger / 255; //Translates value from 0-255 byte to 0-1 float
+        LT = LTfloat * 100;
+        emit LT_VALUE(LT);
+        if(LT > 10)
+        {
+            emit LT_BUTTON_PRESSED();
+        }
+        else
+        {
+            emit LT_BUTTON_RELEASED();
+        }
+
+        //Right trigger
+        RTfloat = (float) state.Gamepad.bRightTrigger / 255; //Translates value from 0-255 byte to 0-1 float
+        RT = RTfloat * 100;
+        emit RT_VALUE(RT);
+        if(RT > 10)
+        {
+            emit RT_BUTTON_PRESSED();
+        }
+        else
+        {
+            emit RT_BUTTON_RELEASED();
+        }
+
+        //Left stick
+        LSfloat_X = (float) state.Gamepad.sThumbLX / 32767; //Translates to 0-1 float value
+        LS_X = LSfloat_X * 100;
+        LSfloat_Y = (float) state.Gamepad.sThumbLY / 32767; //Translates to 0-1 float value
+        LS_Y = LSfloat_Y * 100;
+
+        //Correct inverted Y-axis
+        if(LS_Y > 0)
+        {
+            LS_Y *= -1; //Make negative if positive
+        }
+        else if(LS_Y < 0)
+        {
+            LS_Y -= LS_Y *2; //Make positive if negative
+        }
+
+        //Check if joystick is in dead zone
+        if((LS_X > 10 || LS_X < -10) || (LS_Y > 10 || LS_Y < -10))
+        {
+            emit LS_VALUES(LS_X, LS_Y);
+        }
+        else
+        {
+            emit LS_DEADZONE();
+        }
+
+        //Right stick
+        RSfloat_X = (float) state.Gamepad.sThumbRX / 32767; //Translates to 0-1 float value
+        RS_X = RSfloat_X * 100;
+        RSfloat_Y = (float) state.Gamepad.sThumbRY / 32767; //Translates to 0-1 float value
+        RS_Y = RSfloat_Y * 100;
+
+        //Correct inverted Y-axis
+        if(RS_Y > 0)
+        {
+            RS_Y *= -1; //Make negative if positive
+        }
+        else if(RS_Y < 0)
+        {
+            RS_Y -= RS_Y *2; //Make positive if negative
+        }
+
+        //Check if joystick is in dead zone
+        if((RS_X > 10 || RS_X < -10) || (RS_Y > 10 || RS_Y < -10))
+        {
+            emit RS_VALUES(RS_X, RS_Y);
+        }
+        else
+        {
+            emit RS_DEADZONE();
+        }
+
+
     }
 }
 

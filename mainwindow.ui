@@ -26,7 +26,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>PCPad v0.1</string>
+   <string>PCPad v0.11</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QTabWidget" name="tabWidget">
@@ -587,12 +587,277 @@
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
+     <widget class="QLabel" name="PRESSED_LT">
+      <property name="geometry">
+       <rect>
+        <x>53</x>
+        <y>16</y>
+        <width>41</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="pcpadresources.qrc">:/images/resources/left2.png</pixmap>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="PRESSED_RT">
+      <property name="geometry">
+       <rect>
+        <x>233</x>
+        <y>16</y>
+        <width>41</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="pcpadresources.qrc">:/images/resources/right2.png</pixmap>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QProgressBar" name="LTBar">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>240</y>
+        <width>31</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"> QProgressBar
+{
+	border: 1px solid black;
+}
+
+QProgressBar::chunk
+{
+     background-color: rgb(0, 255, 0);
+ }
+</string>
+      </property>
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="value">
+       <number>0</number>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="textVisible">
+       <bool>true</bool>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="invertedAppearance">
+       <bool>false</bool>
+      </property>
+      <property name="textDirection">
+       <enum>QProgressBar::TopToBottom</enum>
+      </property>
+      <property name="format">
+       <string notr="true">%p%</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="LT_label">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>260</y>
+        <width>47</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Left
+Trigger</string>
+      </property>
+     </widget>
+     <widget class="QProgressBar" name="RTBar">
+      <property name="geometry">
+       <rect>
+        <x>242</x>
+        <y>240</y>
+        <width>31</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"> QProgressBar
+{
+	border: 1px solid black;
+}
+
+QProgressBar::chunk
+{
+     background-color: rgb(0, 255, 0);
+ }
+</string>
+      </property>
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="value">
+       <number>0</number>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="textVisible">
+       <bool>true</bool>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="invertedAppearance">
+       <bool>false</bool>
+      </property>
+      <property name="textDirection">
+       <enum>QProgressBar::TopToBottom</enum>
+      </property>
+      <property name="format">
+       <string notr="true">%p%</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="RT_label">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>260</y>
+        <width>45</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="accessibleName">
+       <string/>
+      </property>
+      <property name="text">
+       <string>Right
+Trigger</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="LS_Circle">
+      <property name="geometry">
+       <rect>
+        <x>14</x>
+        <y>330</y>
+        <width>103</width>
+        <height>103</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="pcpadresources.qrc">:/images/resources/AnalogCircle.png</pixmap>
+      </property>
+     </widget>
+     <widget class="QLabel" name="RS_Circle">
+      <property name="geometry">
+       <rect>
+        <x>206</x>
+        <y>330</y>
+        <width>103</width>
+        <height>103</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="pcpadresources.qrc">:/images/resources/AnalogCircle.png</pixmap>
+      </property>
+     </widget>
+     <widget class="QLabel" name="LS_label">
+      <property name="geometry">
+       <rect>
+        <x>122</x>
+        <y>360</y>
+        <width>47</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Left
+Stick</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="RS_label">
+      <property name="geometry">
+       <rect>
+        <x>153</x>
+        <y>360</y>
+        <width>47</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Right
+Stick</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="LS_dot">
+      <property name="geometry">
+       <rect>
+        <x>62</x>
+        <y>378</y>
+        <width>7</width>
+        <height>7</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="pcpadresources.qrc">:/images/resources/RedDot.png</pixmap>
+      </property>
+     </widget>
+     <widget class="QLabel" name="RS_dot">
+      <property name="geometry">
+       <rect>
+        <x>254</x>
+        <y>378</y>
+        <width>7</width>
+        <height>7</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="pcpadresources.qrc">:/images/resources/RedDot.png</pixmap>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="about">
      <attribute name="title">
       <string>About</string>
      </attribute>
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="PCPad_title">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -609,10 +874,10 @@
        </font>
       </property>
       <property name="text">
-       <string>PCPad v0.1</string>
+       <string>PCPad v0.11</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_2">
+     <widget class="QLabel" name="License">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -632,7 +897,7 @@ This program is distributed in the hope that it will be useful,  but WITHOUT ANY
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="label_3">
+     <widget class="QLabel" name="Source_Link">
       <property name="geometry">
        <rect>
         <x>10</x>

@@ -1,12 +1,17 @@
+PCPad v0.11 - 22/09/2015
+---------------------------------------
+* Added trigger and analog stick
+testing to the Controller Test tab.
+
 PCPad v0.1 - 20/09/2015
 ---------------------------------------
-*Added controller test for 2-state
+* Added controller test for 2-state
 buttons. Triggers and analog sticks
 still to come.
 
 PCPad v0.01 - 18/09/2015
 ---------------------------------------
-*Project started
-*Added a warning which will appear on
+* Project started
+* Added a warning which will appear on
 start-up if there is no Xinput
 compatible controller plugged in.

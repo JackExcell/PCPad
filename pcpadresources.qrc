@@ -10,5 +10,9 @@
         <file>resources/left.png</file>
         <file>resources/right.png</file>
         <file>resources/up.png</file>
+        <file>resources/left2.png</file>
+        <file>resources/right2.png</file>
+        <file>resources/AnalogCircle.png</file>
+        <file>resources/RedDot.png</file>
     </qresource>
 </RCC>
