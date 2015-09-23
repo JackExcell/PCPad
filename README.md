@@ -1,4 +1,4 @@
-# PCPad v0.1
+# PCPad v0.11
 This software allows users to control their PC with an Xbox controller pad as an alternative to a mouse and keyboard.
 
 PCPad is currently in the very early stages of its development so many features have not yet been implemented.
