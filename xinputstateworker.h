@@ -10,7 +10,7 @@ class XinputStateWorker : public QObject
     Q_OBJECT
 
 public:
-    XinputStateWorker();
+    XinputStateWorker(QString settingsFilePath);
     ~XinputStateWorker();
     XINPUT_STATE getState();
     XINPUT_STATE state;
@@ -77,6 +77,9 @@ signals:
     void RS_DEADZONE();
 
 private:
+
+    //Settings file path, specified in constructor.
+    QString settingsFile;
 
     //Trigger values
     float LTfloat; //Value between 0 and 1 showing how much the left trigger is pressed in.

@@ -1,3 +1,10 @@
+PCPad v0.3 - 28/09/2015
+---------------------------------------
+* Implemented mouse simulation with the
+left analog stick.
+* Added customisable cursor speed and 
+analog stick deadzones
+
 PCPad v0.11 - 22/09/2015
 ---------------------------------------
 * Added trigger and analog stick

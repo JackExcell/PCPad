@@ -14,10 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    xinputstateworker.cpp
+    xinputstateworker.cpp \
+    simulator.cpp
 
 HEADERS  += mainwindow.h \
-    xinputstateworker.h
+    xinputstateworker.h \
+    simulator.h
 
 FORMS    += mainwindow.ui
 

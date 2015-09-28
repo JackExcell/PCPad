@@ -1,12 +1,15 @@
 #include <QDebug>
 #include <QThread>
+#include <QSettings>
 #include <winerror.h>
+#include <windows.h>
 #include <math.h>
 #include "xinputstateworker.h"
 
-XinputStateWorker::XinputStateWorker()
-{
 
+XinputStateWorker::XinputStateWorker(QString settingsFilePath)
+{
+    settingsFile = settingsFilePath;
 }
 
 XinputStateWorker::~XinputStateWorker()
@@ -14,16 +17,13 @@ XinputStateWorker::~XinputStateWorker()
 
 }
 
-//Sleeper class to allow for millisecond delays, subclass of QThread
-class Sleeper : public QThread
-{
-public:
-    static void msleep(unsigned long msecs){QThread::msleep(msecs);}
-};
+//QSettings settings;
+
 
 //This process will be constantly repeated while the program runs
 void XinputStateWorker::processXinputState() {
 
+   // QSettings settings(settingsFile, QSettings::IniFormat);
     while(true)
     {
         isConnected = (XInputGetState(0, &state));
@@ -97,8 +97,6 @@ void XinputStateWorker::processXinputState() {
         {
              emit RB_BUTTON_RELEASED();
         }
-
-        Sleeper::msleep(16); // 16 millisecond delay means loop executes 60 times per second
 
         //LS button
         if((state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB) != 0)
@@ -206,6 +204,17 @@ void XinputStateWorker::processXinputState() {
             emit RT_BUTTON_RELEASED();
         }
 
+        //Get Deadzone information from settings for use with analog stick movements
+        QSettings settings(settingsFile, QSettings::IniFormat);
+        int dz_LSX = settings.value("deadzones/LSX").toInt();
+        int dz_LSY = settings.value("deadzones/LSY").toInt();
+        int dz_RSX = settings.value("deadzones/RSX").toInt();
+        int dz_RSY = settings.value("deadzones/RSY").toInt();
+        int dz_LSX_negative = dz_LSX*-1;
+        int dz_LSY_negative = dz_LSY*-1;
+        int dz_RSX_negative = dz_RSX*-1;
+        int dz_RSY_negative = dz_RSY*-1;
+
         //Left stick
         LSfloat_X = (float) state.Gamepad.sThumbLX / 32767; //Translates to 0-1 float value
         LS_X = LSfloat_X * 100;
@@ -223,8 +232,18 @@ void XinputStateWorker::processXinputState() {
         }
 
         //Check if joystick is in dead zone
-        if((LS_X > 10 || LS_X < -10) || (LS_Y > 10 || LS_Y < -10))
+        if((LS_X > dz_LSX || LS_X < dz_LSX_negative) || (LS_Y > dz_LSY || LS_Y < dz_LSY_negative))
         {
+            if(LS_X < dz_LSX && LS_X > dz_LSX_negative)
+            {
+                LS_X = 0;
+            }
+
+            if(LS_Y < dz_LSY && LS_Y > dz_LSY_negative)
+            {
+                LS_Y = 0;
+            }
+
             emit LS_VALUES(LS_X, LS_Y);
         }
         else
@@ -249,8 +268,18 @@ void XinputStateWorker::processXinputState() {
         }
 
         //Check if joystick is in dead zone
-        if((RS_X > 10 || RS_X < -10) || (RS_Y > 10 || RS_Y < -10))
+        if((RS_X > dz_RSX || RS_X < dz_RSX_negative) || (RS_Y > dz_RSY || RS_Y < dz_RSY_negative))
         {
+            if(RS_X < dz_RSX && RS_X > dz_RSX_negative)
+            {
+                RS_X = 0;
+            }
+
+            if(RS_Y < dz_RSY && RS_Y > dz_RSY_negative)
+            {
+                RS_Y = 0;
+            }
+
             emit RS_VALUES(RS_X, RS_Y);
         }
         else
@@ -258,7 +287,10 @@ void XinputStateWorker::processXinputState() {
             emit RS_DEADZONE();
         }
 
-
+        Sleep(18); // 18 millisecond delay means loop executes approximately 55 times per second.
+        //A value of 16 which would effectively give near perfect 60fps cursor movement was causing issues
+        //where the cursor appeared to skip a few pixels every half a second or so, need to investigate
+        //this further.
     }
 }
 
