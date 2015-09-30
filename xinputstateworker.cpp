@@ -20,7 +20,8 @@ XinputStateWorker::~XinputStateWorker()
 //QSettings settings;
 
 
-//This process will be constantly repeated while the program runs
+//This process will be constantly repeated while the program runs, it will check the state of the
+//controller and emit the relevant signals at a rate of approximately 55 times per second.
 void XinputStateWorker::processXinputState() {
 
    // QSettings settings(settingsFile, QSettings::IniFormat);
@@ -258,14 +259,14 @@ void XinputStateWorker::processXinputState() {
         RS_Y = RSfloat_Y * 100;
 
         //Correct inverted Y-axis
-        if(RS_Y > 0)
+        /*if(RS_Y > 0)
         {
             RS_Y *= -1; //Make negative if positive
         }
         else if(RS_Y < 0)
         {
             RS_Y -= RS_Y *2; //Make positive if negative
-        }
+        }*/
 
         //Check if joystick is in dead zone
         if((RS_X > dz_RSX || RS_X < dz_RSX_negative) || (RS_Y > dz_RSY || RS_Y < dz_RSY_negative))

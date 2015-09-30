@@ -1,3 +1,11 @@
+PCPad v1.0 30/08/2015
+---------------------------------------
+* Added right clicking with the B
+button and vertical scrolling with the
+RS analog stick, allowing the user full
+mouse simulation with this software.
+* Added some cursor controll settings.
+
 PCPad v0.3 - 28/09/2015
 ---------------------------------------
 * Implemented mouse simulation with the

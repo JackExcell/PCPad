@@ -3,15 +3,26 @@
 #include <QSettings>
 #include "simulator.h"
 
+#define MOUSEEVENTF_HWHEEL 0x01000
 
+//This class simulates windows mouse and keyboard input by sending an
+//INPUT struct to the operating system.
 Simulator::Simulator(XinputStateWorker *controller, QString settingsFilePath)
 {
     settingsFile = settingsFilePath;
-
     control_ptr = controller;
+
     connect(control_ptr, SIGNAL(A_BUTTON_PRESSED()), this, SLOT(LeftClickDown()));
     connect(control_ptr, SIGNAL(A_BUTTON_RELEASED()), this, SLOT(LeftClickUp()));
+    connect(control_ptr, SIGNAL(B_BUTTON_PRESSED()), this, SLOT(RightClickDown()));
+    connect(control_ptr, SIGNAL(B_BUTTON_RELEASED()), this, SLOT(RightClickUp()));
     connect(control_ptr, SIGNAL(LS_VALUES(int,int)), this, SLOT(MouseMove(int,int)));
+    connect(control_ptr, SIGNAL(RS_VALUES(int,int)), this, SLOT(MouseScroll(int,int)));
+
+    //Variable initialisation
+    leftClickDown = false;
+    rightClickDown = false;
+
 }
 
 Simulator::~Simulator()
@@ -127,6 +138,43 @@ void Simulator::MouseMove(int xSpeed, int ySpeed)
     SendInput(1,&Input,sizeof(INPUT));
 }
 
+void Simulator::MouseScroll(int xAxis, int yAxis)
+{
+    if(control_ptr->isConnected != ERROR_SUCCESS || !PCPadEnabled())
+    {
+        return;
+    }
+
+    int speedSetting = getScrollSpeed();
+
+    int xSpeed = (xAxis/4)*speedSetting;
+    int ySpeed = (yAxis/4)*speedSetting;
+
+    //X-axis
+    //Sending both X-axis and Y-axis scrolling at the same time causes neither axis to work properly.
+    //Both work fine on their own, this is possibly due to MOUSEEVENTF_HWHEEL and MOUSEEVENTF_WHEEL
+    //causing some kind of conflict. Needs further investigation. For now, scrolling only works on the
+    //Y-axis.
+
+
+    //INPUT Input_X={0}; // Input struct
+
+    //Input_X.type = INPUT_MOUSE;
+    //Input_X.mi.dwFlags = MOUSEEVENTF_HWHEEL;
+    //Input_X.mi.mouseData = xSpeed;
+
+    //Y-axis
+    INPUT Input_Y={0}; // Input struct
+
+    Input_Y.type = INPUT_MOUSE;
+    Input_Y.mi.dwFlags = MOUSEEVENTF_WHEEL;
+    Input_Y.mi.mouseData = ySpeed;
+
+
+    //SendInput(1,&Input_X,sizeof(INPUT));
+    SendInput(1,&Input_Y, sizeof(INPUT));
+}
+
 bool Simulator::leftClickDownCheck()
 {
     return leftClickDown;
@@ -144,4 +192,55 @@ int Simulator::getCursorSpeed()
     QSettings settings(settingsFile, QSettings::IniFormat);
     int speed = settings.value("cursor/speed").toInt();
     return speed;
+}
+
+int Simulator::getScrollSpeed()
+{
+    QSettings settings(settingsFile, QSettings::IniFormat);
+    int speed = settings.value("cursor/scrollspeed").toInt();
+    return speed;
+}
+
+void Simulator::RightClickDown()
+{
+    if(control_ptr->isConnected != ERROR_SUCCESS || !PCPadEnabled())
+    {
+        return;
+    }
+
+    if(!rightClickDown)
+    {
+        INPUT Input={0}; // Input struct
+
+        //Specify input type
+        Input.type      = INPUT_MOUSE;
+        Input.mi.dwFlags  = MOUSEEVENTF_RIGHTDOWN;
+
+        //Send input
+        SendInput(1,&Input,sizeof(INPUT));
+
+        rightClickDown = true;
+    }
+}
+
+void Simulator::RightClickUp()
+{
+    if(control_ptr->isConnected != ERROR_SUCCESS || !PCPadEnabled())
+    {
+        return;
+    }
+
+    if(rightClickDown)
+    {
+        INPUT    Input={0}; // Input struct
+
+        //Specify input type
+        Input.type      = INPUT_MOUSE;
+        Input.mi.dwFlags  = MOUSEEVENTF_RIGHTUP;
+
+        //Send input
+        SendInput(1,&Input,sizeof(INPUT));
+
+        rightClickDown = false;
+    }
 }

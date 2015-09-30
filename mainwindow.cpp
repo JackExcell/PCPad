@@ -4,6 +4,9 @@
 #include <QDebug>
 #include <QSettings>
 #include <QString>
+#include <QTimer>
+#include <QIcon>
+#include <QMenu>
 #include <winerror.h>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -17,7 +20,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     //UI Preparation
+    this->setWindowIcon(QIcon(":/icons/resources/pcpadicon.ico"));
     ui->setupUi(this);
+
+    //Variable initialisation
+    controlCheckShown = false;
 
     //Define location of setting .ini file
     settingsFile = QApplication::applicationDirPath() + "/PCPadSettings.ini";
@@ -64,6 +71,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connectButtonIndicators();
 
     connectSettingsEvents();
+
+    InitSystemTray();
 
     loadSettings();
 }
@@ -187,6 +196,8 @@ void MainWindow::connectSettingsEvents()
     connect(ui->Enable_Checkbox, SIGNAL(toggled(bool)), this, SLOT(enableToggled(bool)));
     connect(ui->CursorSpeedSlider, SIGNAL(valueChanged(int)), this, SLOT(settingsChanged()));
     connect(ui->CursorSpeedSlider, SIGNAL(valueChanged(int)), this, SLOT(cursorSpeedChanged()));
+    connect(ui->ScrollSpeedSlider, SIGNAL(valueChanged(int)), this, SLOT(settingsChanged()));
+    connect(ui->ScrollSpeedSlider, SIGNAL(valueChanged(int)), this, SLOT(scrollSpeedChanged()));
     connect(ui->ApplyButton, SIGNAL(clicked(bool)), this, SLOT(saveSettings()));
     connect(ui->DeadzoneHelpButton, SIGNAL(clicked(bool)), this, SLOT(deadzonesHelp()));
     connect(ui->LSX_DeadzoneSlider, SIGNAL(valueChanged(int)), this, SLOT(settingsChanged()));
@@ -233,6 +244,10 @@ void MainWindow::loadSettings()
     int cursorSpeed = settings.value("cursor/speed").toInt();
     ui->CursorSpeedSlider->setValue(cursorSpeed);
 
+    //Scroll speed
+    int scrollSpeed = settings.value("cursor/scrollspeed").toInt();
+    ui->ScrollSpeedSlider->setValue(scrollSpeed);
+
     //Deadzones
     int LSX = settings.value("deadzones/LSX").toInt();
     int LSY = settings.value("deadzones/LSY").toInt();
@@ -253,6 +268,10 @@ void MainWindow::saveSettings()
     //Cursor speed
     int cursorSpeed = ui->CursorSpeedSlider->value();
     settings.setValue("cursor/speed", cursorSpeed);
+
+    //Scroll speed
+    int scrollSpeed = ui->ScrollSpeedSlider->value();
+    settings.setValue("cursor/scrollspeed", scrollSpeed);
 
     //Deadzones
     int deadzone_LSX = ui->LSX_DeadzoneSlider->value();
@@ -297,6 +316,31 @@ void MainWindow::cursorSpeedChanged()
     }
 }
 
+void MainWindow::scrollSpeedChanged()
+{
+    int speed = ui->ScrollSpeedSlider->value();
+
+    switch(speed)
+    {
+    case 1:
+        //Slow
+        ui->ScrollSpeedLabel->setText("Scroll Speed: Slow");
+        break;
+    case 2:
+        //Medium
+        ui->ScrollSpeedLabel->setText("Scroll Speed: Medium");
+        break;
+    case 3:
+        //Fast
+        ui->ScrollSpeedLabel->setText("Scroll Speed: Fast");
+        break;
+    case 4:
+        //Super Fast
+        ui->ScrollSpeedLabel->setText("Scroll Speed: Super Fast");
+        break;
+    }
+}
+
 void MainWindow::deadzonesHelp()
 {
     QMessageBox deadzoneHelp;
@@ -337,4 +381,65 @@ void MainWindow::updateDeadzoneDisplay_RSY()
     QString value = QString::number(ui->RSY_DeadzoneSlider->value());
     QString valueString = QString("RSY X-Axis: ").append(value).append("%");
     ui->RSY_Label->setText(valueString);
+}
+
+void MainWindow::changeEvent(QEvent *e)
+{
+    switch (e->type())
+        {
+            case QEvent::WindowStateChange:
+                {
+                    if (this->windowState() & Qt::WindowMinimized)
+                    {
+                        QTimer::singleShot(0, this, SLOT(hide()));
+                    }
+                    break;
+                }
+
+            default:
+                break;
+        }
+
+        QMainWindow::changeEvent(e);
+}
+
+void MainWindow::InitSystemTray()
+{
+    trayIcon = new QSystemTrayIcon(QIcon(":/icons/resources/pcpadicon.ico"), this);
+
+    QAction *trayShow = new QAction( "Show PCPad Interface",trayIcon );
+    QAction *trayQuit = new QAction( "Exit", trayIcon );
+
+    connect(trayQuit, SIGNAL(triggered()), this, SLOT(close()));
+    connect(trayShow, SIGNAL(triggered()), this, SLOT(maximiseFromTray()));
+    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(maximiseFromTray(QSystemTrayIcon::ActivationReason)));
+
+    QMenu *trayMenu = new QMenu;
+    trayMenu->addAction(trayQuit);
+    trayMenu->addAction(trayShow);
+
+    trayIcon->setContextMenu(trayMenu);
+
+    trayIcon->show();
+}
+
+void MainWindow::maximiseFromTray()
+{
+    this->showNormal();
+    this->setFocus();
+}
+
+void MainWindow::maximiseFromTray(QSystemTrayIcon::ActivationReason reason)
+{
+    if(reason != QSystemTrayIcon::DoubleClick)
+    {
+        return;
+    }
+    else
+    {
+        this->showNormal();
+        //this->setFocus();
+        this->raise();
+        this->activateWindow();
+    }
 }

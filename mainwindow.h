@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QEvent>
+#include <QSystemTrayIcon>
 #include <xinput.h>
 #include "xinputstateworker.h"
 #include "simulator.h"
@@ -24,6 +26,8 @@ public:
     void connectButtonIndicators();
     void connectSettingsEvents();
     void loadSettings();
+    void InitSystemTray();
+    void changeEvent(QEvent *e);
 
 public slots:
     //Red dot positioning
@@ -36,6 +40,8 @@ public slots:
     void mouseLeftDown();
     void mouseLeftUp();
     void mouseMovement(int xSpeed, int ySpeed);
+    void cursorSpeedChanged(); //UI update
+    void scrollSpeedChanged(); //UI update
 
     //Triggered when enabled settings is toggled for instant enabling/disabling
     void enableToggled(bool toggleState);
@@ -44,7 +50,7 @@ public slots:
     void settingsChanged();
 
     //Specific triggers to different settings UI elements.
-    void cursorSpeedChanged();
+
     void deadzonesHelp();
 
     //Deadzone value label updates
@@ -56,14 +62,18 @@ public slots:
     //Saves the current settings to the .ini file
     void saveSettings();
 
+    //Tray icon functions
+    void maximiseFromTray();
+    void maximiseFromTray(QSystemTrayIcon::ActivationReason reason);
+
 private:
     Ui::MainWindow *ui;
     XINPUT_STATE state;
     XinputStateWorker *controller;
     Simulator *sim;
-
-    bool controlCheckShown = false;
+    bool controlCheckShown;
     QString settingsFile;
+    QSystemTrayIcon *trayIcon;
 };
 
 #endif // MAINWINDOW_H

@@ -15,4 +15,7 @@
         <file>resources/AnalogCircle.png</file>
         <file>resources/RedDot.png</file>
     </qresource>
+    <qresource prefix="/icons">
+        <file>resources/pcpadicon.ico</file>
+    </qresource>
 </RCC>

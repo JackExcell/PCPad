@@ -20,12 +20,17 @@ public:
 public slots:
     void LeftClickDown();
     void LeftClickUp();
+    void RightClickUp();
+    void RightClickDown();
     void MouseMove(int xSpeed, int ySpeed);
+    void MouseScroll(int xAxis, int yAxis);
     bool PCPadEnabled();
     int getCursorSpeed();
+    int getScrollSpeed();
 
 private:
-    bool leftClickDown = false;
+    bool leftClickDown;
+    bool rightClickDown;
     QString settingsFile;
     XinputStateWorker *control_ptr;
 };
