@@ -9,5 +9,5 @@ This project uses:
 * C++
 * Xinput - an API for recieving input from Xbox controllers
 * Qt Creator 3.5.0 & Qt 5.5.0 application framework
-* 
+
 Xbox is a trademark of Microsoft Corporation.
