@@ -1,7 +1,15 @@
-# PCPad v0.3
+# PCPad v1.0
 This software allows users to control their PC with an Xbox controller pad as an alternative to a mouse and keyboard.
 
-PCPad is currently in the very early stages of its development so many features have not yet been implemented, currently you can only control the mouse cursor using the left analog stick and left click with the A button, but there are many more features yet to come.
+Instructions:
+* Control the mouse cursor with the left analog stick
+* Left click with the A button
+* Right click with the B button
+* Scroll vertically using the right analog stick
+
+Coming in future updates:
+* Custom binding buttons to simulated keyboard presses.
+* On screen virtual keyboard for text entry
 
 ---
 
