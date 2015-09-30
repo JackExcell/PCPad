@@ -121,7 +121,20 @@ void MainWindow::setLSdeadZone()
 //Moves the red dot which shows the position of the right stick
 void MainWindow::setRSdot(int x, int y)
 {
-    ui->RS_dot->setGeometry(254+(x/2), 378+(y/2), 7, 7);
+    //Y axis invert correction
+    int yAxis = y;
+
+    if(y > 0)
+    {
+        yAxis *= -1;
+    }
+    else if(y < 0)
+    {
+        yAxis -= yAxis*2;
+    }
+
+
+    ui->RS_dot->setGeometry(254+(x/2), 378+(yAxis/2), 7, 7);
 }
 
 //Sets the right red dot back to its default position

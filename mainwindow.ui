@@ -26,7 +26,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>PCPad v0.3</string>
+   <string>PCPad v1.01</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QTabWidget" name="tabWidget">
@@ -1333,7 +1333,7 @@ Stick</string>
        </font>
       </property>
       <property name="text">
-       <string>PCPad v1.0</string>
+       <string>PCPad v1.01</string>
       </property>
      </widget>
      <widget class="QLabel" name="License">
